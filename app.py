@@ -8,10 +8,10 @@ from datetime import datetime
 app = Flask(__name__)
 app.secret_key = "sua_chave_secreta"
 
-# --------- CONFIGURA UPLOADS ---------
-UPLOAD_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static/images")
-CHAT_IMAGE_FOLDER = os.path.join("static", "chat-image")
-GIFT_FOLDER = os.path.join("static", "gift")
+# --------- CONFIGURA UPLOADS (Render precisa usar /tmp para escrita) ---------
+UPLOAD_FOLDER = "/tmp/images"
+CHAT_IMAGE_FOLDER = "/tmp/chat-image"
+GIFT_FOLDER = "/tmp/gift"
 
 for folder in [UPLOAD_FOLDER, CHAT_IMAGE_FOLDER, GIFT_FOLDER]:
     os.makedirs(folder, exist_ok=True)
@@ -20,7 +20,7 @@ app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 ALLOWED_EXTENSIONS = {"jpg", "jpeg", "png", "gif"}
 
 # --------- DATABASE ---------
-DB_NAME = "dating_app.db"
+DB_NAME = "/tmp/dating_app.db"  # banco temporário para Render
 
 # ----------------- Banco de Dados -----------------
 def init_db():
@@ -308,25 +308,18 @@ def delete_account():
 
     conn = sqlite3.connect(DB_NAME)
     c = conn.cursor()
-
-    # Apaga mensagens do usuário
     c.execute("DELETE FROM messages WHERE sender_id=? OR receiver_id=?", (user_id, user_id))
-
-    # Apaga matches do usuário
     c.execute("DELETE FROM matches WHERE user1_id=? OR user2_id=?", (user_id, user_id))
-
-    # Apaga o usuário
     c.execute("DELETE FROM users WHERE id=?", (user_id,))
-
     conn.commit()
     conn.close()
 
-    # Remove sessão
     session.pop("user_id", None)
     flash("Sua conta foi eliminada com sucesso!")
     return redirect(url_for("index"))
 
 # ----------------- Inicia App -----------------
+# Para Render: Gunicorn vai usar app:app
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
