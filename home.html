@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Pessoas Próximas</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="container">
+
+    <!-- Cabeçalho / Top Bar -->
+    <div class="top-bar">
+        <a href="{{ url_for('profile') }}">Meu Perfil</a>
+        <a href="{{ url_for('logout') }}">Sair</a>
+    </div>
+
+    <h2>Pessoas próximas</h2>
+
+    <!-- Espaço para anúncio acima da lista -->
+    <div class="ad-container">
+        Espaço para anúncio
+    </div>
+
+    <!-- Lista de perfis -->
+    <div class="profiles-container">
+        {% for user in users %}
+        <div class="profile-card">
+            <img src="{{ url_for('static', filename='images/' + user[9]) }}" alt="Foto de {{ user[1] }}">
+            <h3>{{ user[1] }}</h3>
+            <p>{{ user[5] }}, {{ user[6] }}</p>
+            <a href="{{ url_for('chat', receiver_id=user[0]) }}">Chat</a>
+            <a href="{{ url_for('match', user2_id=user[0]) }}">Match</a>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Espaço para anúncio abaixo da lista -->
+    <div class="ad-container">
+        Espaço para anúncio
+    </div>
+
+</div>
+</body>
+</html>

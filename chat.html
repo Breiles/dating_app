@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="container">
+
+    <!-- Top bar -->
+    <div class="top-bar">
+        <a href="{{ url_for('home') }}">Voltar</a>
+        <a href="{{ url_for('profile') }}">Meu Perfil</a>
+        <a href="{{ url_for('logout') }}">Sair</a>
+    </div>
+
+    <!-- Espaço para anúncio acima do chat -->
+    <div class="ad-container">
+        Espaço para anúncio
+    </div>
+
+    <h2>Chat com {{ receiver[1] }}</h2>
+
+    <div class="chat-container">
+        <div class="messages">
+            {% for msg in messages %}
+                {% if msg[5] == 'text' %}
+                    {% if msg[1] == sender_id %}
+                        <div class="message sender">{{ msg[3] }}</div>
+                    {% else %}
+                        <div class="message receiver">{{ msg[3] }}</div>
+                    {% endif %}
+                {% elif msg[5] == 'image' %}
+                    {% if msg[1] == sender_id %}
+                        <div class="message sender">
+                            <img src="{{ url_for('static', filename='chat-image/' + msg[3]) }}" alt="Imagem enviada">
+                        </div>
+                    {% else %}
+                        <div class="message receiver">
+                            <img src="{{ url_for('static', filename='chat-image/' + msg[3]) }}" alt="Imagem recebida">
+                        </div>
+                    {% endif %}
+                {% elif msg[5] == 'gift' %}
+                    {% if msg[1] == sender_id %}
+                        <div class="message sender">
+                            <img src="{{ url_for('static', filename='gift/' + msg[3]) }}" alt="Gift enviado">
+                        </div>
+                    {% else %}
+                        <div class="message receiver">
+                            <img src="{{ url_for('static', filename='gift/' + msg[3]) }}" alt="Gift recebido">
+                        </div>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Formulário para enviar mensagem -->
+    <form method="POST" enctype="multipart/form-data">
+        <input type="text" name="content" placeholder="Digite uma mensagem...">
+        <input type="file" name="image" accept="image/*">
+        <select name="gift">
+            <option value="">Enviar gift</option>
+            {% for g in gifts %}
+                <option value="{{ g }}">{{ g }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Enviar</button>
+    </form>
+
+    <!-- Espaço para anúncio abaixo do chat -->
+    <div class="ad-container">
+        Espaço para anúncio
+    </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Perfil</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="container">
+    <h2>Editar Perfil</h2>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="flash">{{ messages[0] }}</div>
+      {% endif %}
+    {% endwith %}
+    <form method="POST" enctype="multipart/form-data">
+        <input type="text" name="nome" value="{{ user[1] }}" required>
+        <input type="text" name="numero" value="{{ user[2] }}" required>
+        <select name="sexo" required>
+            <option value="M" {% if user[3]=='M' %}selected{% endif %}>Masculino</option>
+            <option value="F" {% if user[3]=='F' %}selected{% endif %}>Feminino</option>
+        </select>
+        <select name="interesse" required>
+            <option value="M" {% if user[4]=='M' %}selected{% endif %}>Masculino</option>
+            <option value="F" {% if user[4]=='F' %}selected{% endif %}>Feminino</option>
+        </select>
+        <input type="text" name="provincia" value="{{ user[5] }}" required>
+        <input type="text" name="pais" value="{{ user[6] }}" required>
+        <input type="password" name="senha" value="{{ user[7] }}" required>
+        <input type="date" name="birth_date" value="{{ user[8] }}" required>
+        <input type="file" name="image" accept=".jpg">
+        <button type="submit">Atualizar</button>
+    </form>
+    <a class="btn" href="{{ url_for('profile') }}">Cancelar</a>
+</div>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Perfil</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="container">
+
+    <h2>Perfil de {{ user[1] }}</h2>
+
+    <!-- Espaço para anúncio -->
+    <div id="ad-top" class="ad-container">
+        Espaço para anúncio
+    </div>
+
+    <div class="profile-info">
+        <img src="{{ url_for('static', filename='images/' + user[9]) }}" alt="Foto de {{ user[1] }}">
+        <p><strong>Nome:</strong> {{ user[1] }}</p>
+        <p><strong>Número:</strong> {{ user[2] }}</p>
+        <p><strong>Sexo:</strong> {{ user[3] }}</p>
+        <p><strong>Interesse:</strong> {{ user[4] }}</p>
+        <p><strong>Província:</strong> {{ user[5] }}</p>
+        <p><strong>País:</strong> {{ user[6] }}</p>
+        <p><strong>Data de nascimento:</strong> {{ user[8] }}</p>
+    </div>
+
+    <a href="{{ url_for('edit_profile') }}" class="button">Editar Perfil</a>
+
+    <!-- Botão para eliminar conta -->
+    <form method="POST" action="{{ url_for('delete_account') }}"
+          onsubmit="return confirm('Tem certeza que deseja eliminar sua conta? Essa ação é irreversível!');"
+          style="margin-top:20px;">
+        <button type="submit" style="background:red; color:white; padding:10px; border:none; border-radius:5px; cursor:pointer;">
+            Eliminar Conta
+        </button>
+    </form>
+
+    <!-- Espaço para anúncio -->
+    <div id="ad-bottom" class="ad-container">
+        Espaço para anúncio
+    </div>
+
+    <a href="{{ url_for('home') }}" class="button">Voltar</a>
+    <a href="{{ url_for('logout') }}" class="button logout">Sair</a>
+</div>
+</body>
+</html>

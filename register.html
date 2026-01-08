@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Registrar</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="container">
+    <h2>Registrar</h2>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="flash">{{ messages[0] }}</div>
+      {% endif %}
+    {% endwith %}
+    <form method="POST" enctype="multipart/form-data">
+        <input type="text" name="nome" placeholder="Nome" required>
+        <input type="text" name="numero" placeholder="Número" required>
+        <select name="sexo" required>
+            <option value="M">Masculino</option>
+            <option value="F">Feminino</option>
+        </select>
+        <select name="interesse" required>
+            <option value="M">Masculino</option>
+            <option value="F">Feminino</option>
+        </select>
+        <input type="text" name="provincia" placeholder="Província" required>
+        <input type="text" name="pais" placeholder="País" required>
+        <input type="password" name="senha" placeholder="Senha" required>
+        <input type="date" name="birth_date" required>
+        <input type="file" name="image" accept=".jpg">
+        <small>Se não enviar imagem, será usada a padrão.</small>
+        <button type="submit">Registrar</button>
+    </form>
+    <a href="{{ url_for('login') }}">Já tem conta? Login</a>
+</div>
+</body>
+</html>
